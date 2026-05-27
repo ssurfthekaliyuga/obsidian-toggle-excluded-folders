@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Obsidian community plugin that toggles the vault's entire `userIgnoreFilters` list (Obsidian's "Excluded files" setting) on and off. One click on the ribbon icon — or the `toggle-excluded-folders` command — stashes the current filters away (showing everything) or restores them from the stash (hiding what the user configured).
 
-The user manages their excluded list in the native Settings → Files and links → Excluded files. The plugin has no settings tab of its own — its only state is `stash: string[]` in `data.json`, which holds the filters while they're "off". This works for all filter types Obsidian supports: folder paths, files, tags (`#foo`), and regex (`/pattern/`).
+The user manages their excluded list in the native Settings → Files and links → Excluded files. The plugin has no settings tab of its own — its only state is `stash: string[]` in `data.json`, which holds the filters while they're "off". This works for all filter types Obsidian's `userIgnoreFilters` supports: folder paths, files, and regex (`/pattern/`). Tags (`#foo`) are **not** supported by Obsidian's excluded-files setting itself — the plugin can't add that capability.
 
 ## Repository quirk: lives inside a real vault
 

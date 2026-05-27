@@ -1,6 +1,6 @@
 # Toggle Excluded Folders
 
-Obsidian community plugin that toggles your **Excluded files** list on and off with one click. Useful when you keep an `Archive/` folder (or templates, or anything noisy) out of your file explorer / search / graph by default, but occasionally want to dig into it without losing the configuration.
+Obsidian community plugin that toggles your **Excluded files** list on and off with one click. Useful when you keep an archive folder, attachments, templates, or anything else noisy out of your file explorer / search / graph by default, but occasionally want to dig into it without losing the configuration.
 
 ## How it works
 
@@ -9,18 +9,17 @@ The plugin operates on Obsidian's built-in **Settings → Files and links → Ex
 - **One click on the ribbon icon** (or the **Toggle visibility** command) — stashes the entire excluded list to plugin storage and clears the native list. Everything becomes visible.
 - **Click again** — restores the list from the stash. Exclusions are back in effect.
 
-Works with every filter type Obsidian supports:
+Works with every filter type Obsidian's **Excluded files** setting supports:
 
 - Folder paths: `Archive/`
 - Files: `Templates/note.md`
-- Tags: `#exclude`
 - Regex: `/^_/`
 
 Search and Graph views are refreshed automatically after toggling (File Explorer updates on its own).
 
 ## Install
 
-### From community plugins (once published)
+### From community plugins
 
 Settings → Community plugins → Browse → search "Toggle Excluded Folders" → Install → Enable.
 
@@ -30,7 +29,7 @@ Download `main.js` and `manifest.json` from the latest [release](../../releases)
 
 ## Usage
 
-1. Open **Settings → Files and links → Excluded files** and add the folders/tags/regex you want to be able to hide.
+1. Open **Settings → Files and links → Excluded files** and add the folders, files, or regex patterns you want to be able to hide.
 2. Click the ribbon icon (eye/eye-off). First click: hide. Second click: show.
 
 Alternatively, bind the **Toggle visibility** command to a hotkey via Settings → Hotkeys.
@@ -42,8 +41,12 @@ You can add entries to the native list at any time. Anything you add while filte
 ## Caveats
 
 - **Uninstall / disable.** When you disable or uninstall the plugin, it restores its stash back into the native excluded list before unloading, so your exclusions keep working without the plugin installed.
+- **Search or Graph stops refreshing after an Obsidian update.** The plugin pokes these views through internal APIs. If one breaks, the toggle itself still works and you'll see a one-shot notice — workaround: close and reopen the affected view after toggling. Please open an issue with your Obsidian version.
+- **Obsidian removes the config API.** If `Vault.getConfig` / `setConfig` disappear in a future version, the plugin detects this on load, shows a notice, and disables itself instead of crashing.
 
-## Compatibility & internal APIs
+---
+
+## For developers
 
 This plugin reads and writes Obsidian's "Excluded files" list through APIs that are **not part of the public plugin SDK**. They are isolated in two files so the surface area is easy to audit and patch:
 
@@ -53,16 +56,7 @@ This plugin reads and writes Obsidian's "Excluded files" list through APIs that 
 
 Type signatures for everything above live in `src/obsidian-internals.d.ts` as a module augmentation, so the rest of the code reads as plain typed access with no `as any` / `as unknown as` casts at call sites.
 
-### What happens if Obsidian changes these APIs
-
-- **`getConfig` / `setConfig` go away or change shape:** the plugin detects this on load, shows a one-time notice (*"Your Obsidian version lacks the internal config access this plugin needs…"*) and disables itself — no ribbon, no command — instead of crashing.
-- **A refresher breaks** (Search or Graph stops refreshing after an Obsidian update): the failing refresher is isolated in a per-refresher `try`/`catch`. The toggle itself keeps working, the *other* refresher still runs, and you get a one-shot notice (*"Couldn't refresh Search/Graph automatically. Reopen the view to apply changes."*) rate-limited to once per 5 minutes per view. **Workaround until a fix ships:** close and reopen the Search / Graph view after toggling.
-
-### Reporting breakage
-
-If a refresh stops working after an Obsidian update, please open an issue with your Obsidian version. A fix usually means updating one entry in `src/refreshers.ts`.
-
-## Development
+### Build
 
 ```bash
 npm install
@@ -71,7 +65,9 @@ npm run build  # tsc typecheck + production esbuild
 npm run lint
 ```
 
-Source layout under `src/`:
+### Source layout
+
+Under `src/`:
 
 - `main.ts` — plugin lifecycle, toggle logic, ribbon, command
 - `vault-config.ts` — isolated wrapper around the undocumented `Vault.getConfig`/`setConfig` for `userIgnoreFilters`
