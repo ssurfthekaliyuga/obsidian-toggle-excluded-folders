@@ -3,7 +3,7 @@
 	"name": "Toggle Excluded Folders",
 	"version": "1.0.0",
 	"minAppVersion": "1.7.0",
-	"description": "Quickly hide or show user-defined folders from the file explorer, search and graph by toggling Obsidian's Excluded files setting.",
+	"description": "Quickly hide or show user-defined folders from the file explorer, search and graph by toggling Excluded files setting.",
 	"author": "Alexander Leonov",
 	"authorUrl": "https://github.com/ssurfthekaliyuga",
 	"isDesktopOnly": false
