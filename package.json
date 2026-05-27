@@ -1,6 +1,6 @@
 {
 	"name": "toggle-excluded-folders",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Quickly hide or show user-defined folders from the file explorer, search and graph by toggling Obsidian's Excluded files setting.",
 	"main": "main.js",
 	"type": "module",

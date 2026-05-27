@@ -1,7 +1,7 @@
 {
 	"id": "toggle-excluded-folders",
 	"name": "Toggle Excluded Folders",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "1.7.0",
 	"description": "Quickly hide or show user-defined folders from the file explorer, search and graph by toggling Excluded files setting.",
 	"author": "Alexander Leonov",
